@@ -35,13 +35,19 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
   List<Question> questions = [
-    Question(question:'Canada Day is celebrated on July 1', answer: true),
-    Question(question:'Queen Elizabeth I is the Royal Queen', answer: false),
-    Question(question:'Aboriginals were the founding people of Canada', answer: true),
+    Question(question: 'Canada Day is celebrated on July 1', answer: true),
+    Question(question: 'Queen Elizabeth I is the Royal Queen', answer: false),
+    Question(
+        question: 'Aboriginals were the founding people of Canada',
+        answer: true),
   ];
 
   int currentQuestionNumber = 0;
-  
+
+  isLastQuestion() {
+    return currentQuestionNumber == questions.length - 1;
+  }
+
   @override
   Widget build(BuildContext context) {
     // print(questions[0].toString());
@@ -71,7 +77,7 @@ class _QuizPageState extends State<QuizPage> {
             child: ElevatedButton(
               style: ButtonStyle(
                   backgroundColor:
-                  MaterialStateProperty.all<Color>(Colors.green)),
+                      MaterialStateProperty.all<Color>(Colors.green)),
               child: const Text(
                 'True',
                 style: TextStyle(
@@ -80,10 +86,25 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                if (currentQuestionNumber < questions.length - 1) {
+                setState(() {
+                  if (questions[currentQuestionNumber].answer == true) {
+                    scoreKeeper.add(const Icon(
+                      Icons.check_circle_outline,
+                      color: Colors.green,
+                    ));
+                  } else {
+                    scoreKeeper.add(const Icon(
+                      Icons.cancel_outlined,
+                      color: Colors.red,
+                    ));
+                  }
+                });
+                if (isLastQuestion() == false) {
                   setState(() {
                     currentQuestionNumber += 1;
                   });
+                } else {
+                  print('Quiz finished');
                 }
               },
             ),
@@ -95,7 +116,7 @@ class _QuizPageState extends State<QuizPage> {
             child: ElevatedButton(
               style: ButtonStyle(
                   backgroundColor:
-                  MaterialStateProperty.all<Color>(Colors.red)),
+                      MaterialStateProperty.all<Color>(Colors.red)),
               child: const Text(
                 'False',
                 style: TextStyle(
@@ -104,10 +125,23 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                if (currentQuestionNumber < questions.length - 1) {
+                if (questions[currentQuestionNumber].answer == false) {
+                  scoreKeeper.add(const Icon(
+                    Icons.check_circle_outline,
+                    color: Colors.green,
+                  ));
+                } else {
+                  scoreKeeper.add(const Icon(
+                    Icons.cancel_outlined,
+                    color: Colors.red,
+                  ));
+                }
+                if (isLastQuestion() == false) {
                   setState(() {
                     currentQuestionNumber += 1;
                   });
+                } else {
+                  print('Quiz finished');
                 }
               },
             ),
