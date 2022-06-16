@@ -37,6 +37,23 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
+  void _checkAnswer(bool userAnswer) {
+    setState(() {
+      if (quizContent.getAnswer() == userAnswer) {
+        scoreKeeper.add(const Icon(
+          Icons.check_circle_outline,
+          color: Colors.green,
+        ));
+      } else {
+        scoreKeeper.add(const Icon(
+          Icons.cancel_outlined,
+          color: Colors.red,
+        ));
+      }
+      quizContent.nextQuestion();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -74,22 +91,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                setState(() {
-                  if (quizContent.getAnswer() == true) {
-                    scoreKeeper.add(const Icon(
-                      Icons.check_circle_outline,
-                      color: Colors.green,
-                    ));
-                  } else {
-                    scoreKeeper.add(const Icon(
-                      Icons.cancel_outlined,
-                      color: Colors.red,
-                    ));
-                  }
-                });
-                setState(() {
-                  quizContent.nextQuestion();
-                });
+                _checkAnswer(true);
               },
             ),
           ),
@@ -109,22 +111,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                setState(() {
-                  if (quizContent.getAnswer() == false) {
-                    scoreKeeper.add(const Icon(
-                      Icons.check_circle_outline,
-                      color: Colors.green,
-                    ));
-                  } else {
-                    scoreKeeper.add(const Icon(
-                      Icons.cancel_outlined,
-                      color: Colors.red,
-                    ));
-                  }
-                });
-                setState(() {
-                  quizContent.nextQuestion();
-                });
+                _checkAnswer(false);
               },
             ),
           ),
