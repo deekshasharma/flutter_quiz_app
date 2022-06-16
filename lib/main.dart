@@ -37,15 +37,8 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
-  int currentQuestionNumber = 0;
-
-  isLastQuestion() {
-    return currentQuestionNumber == quizContent.getTotalQuestions() - 1;
-  }
-
   @override
   Widget build(BuildContext context) {
-    // print(questions[0].toString());
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -56,7 +49,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizContent.getQuestion(currentQuestionNumber),
+                quizContent.getQuestion(),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 25.0,
@@ -82,7 +75,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 setState(() {
-                  if (quizContent.getAnswer(currentQuestionNumber) == true) {
+                  if (quizContent.getAnswer() == true) {
                     scoreKeeper.add(const Icon(
                       Icons.check_circle_outline,
                       color: Colors.green,
@@ -94,13 +87,9 @@ class _QuizPageState extends State<QuizPage> {
                     ));
                   }
                 });
-                if (isLastQuestion() == false) {
-                  setState(() {
-                    currentQuestionNumber += 1;
-                  });
-                } else {
-                  print('Quiz finished');
-                }
+                setState(() {
+                  quizContent.nextQuestion();
+                });
               },
             ),
           ),
@@ -121,7 +110,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 setState(() {
-                  if (quizContent.getAnswer(currentQuestionNumber) == false) {
+                  if (quizContent.getAnswer() == false) {
                     scoreKeeper.add(const Icon(
                       Icons.check_circle_outline,
                       color: Colors.green,
@@ -133,13 +122,9 @@ class _QuizPageState extends State<QuizPage> {
                     ));
                   }
                 });
-                if (isLastQuestion() == false) {
-                  setState(() {
-                    currentQuestionNumber += 1;
-                  });
-                } else {
-                  print('Quiz finished');
-                }
+                setState(() {
+                  quizContent.nextQuestion();
+                });
               },
             ),
           ),

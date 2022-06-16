@@ -1,6 +1,7 @@
 import 'package:flutter_quiz/question.dart';
 
 class QuizContent {
+  int _currentQuestionNumber = 0;
   final List<Question> _questions = [
     Question(question: 'Canada Day is celebrated on July 1', answer: true),
     Question(question: 'Queen Elizabeth I is the Royal Queen', answer: false),
@@ -9,12 +10,18 @@ class QuizContent {
         answer: true),
   ];
 
-  String getQuestion(int questionNumber) {
-    return _questions[questionNumber].question;
+  void nextQuestion(){
+    if(_currentQuestionNumber < _questions.length - 1){
+      _currentQuestionNumber++;
+    }
   }
 
-  bool getAnswer(int questionNumber) {
-    return _questions[questionNumber].answer;
+  String getQuestion() {
+    return _questions[_currentQuestionNumber].question;
+  }
+
+  bool getAnswer() {
+    return _questions[_currentQuestionNumber].answer;
   }
 
   int getTotalQuestions() {
