@@ -24,7 +24,4 @@ class QuizContent {
     return _questions[_currentQuestionNumber].answer;
   }
 
-  int getTotalQuestions() {
-    return _questions.length;
-  }
 }
