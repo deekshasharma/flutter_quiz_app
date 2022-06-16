@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_quiz/question.dart';
+import 'package:flutter_quiz/quiz_content.dart';
+
+QuizContent quizContent = QuizContent();
 
 void main() {
   runApp(QuizApp());
@@ -34,18 +36,11 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
-  List<Question> questions = [
-    Question(question: 'Canada Day is celebrated on July 1', answer: true),
-    Question(question: 'Queen Elizabeth I is the Royal Queen', answer: false),
-    Question(
-        question: 'Aboriginals were the founding people of Canada',
-        answer: true),
-  ];
 
   int currentQuestionNumber = 0;
 
   isLastQuestion() {
-    return currentQuestionNumber == questions.length - 1;
+    return currentQuestionNumber == quizContent.getTotalQuestions() - 1;
   }
 
   @override
@@ -61,7 +56,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[currentQuestionNumber].question,
+                quizContent.getQuestion(currentQuestionNumber),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 25.0,
@@ -87,7 +82,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 setState(() {
-                  if (questions[currentQuestionNumber].answer == true) {
+                  if (quizContent.getAnswer(currentQuestionNumber) == true) {
                     scoreKeeper.add(const Icon(
                       Icons.check_circle_outline,
                       color: Colors.green,
@@ -125,17 +120,19 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                if (questions[currentQuestionNumber].answer == false) {
-                  scoreKeeper.add(const Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.green,
-                  ));
-                } else {
-                  scoreKeeper.add(const Icon(
-                    Icons.cancel_outlined,
-                    color: Colors.red,
-                  ));
-                }
+                setState(() {
+                  if (quizContent.getAnswer(currentQuestionNumber) == false) {
+                    scoreKeeper.add(const Icon(
+                      Icons.check_circle_outline,
+                      color: Colors.green,
+                    ));
+                  } else {
+                    scoreKeeper.add(const Icon(
+                      Icons.cancel_outlined,
+                      color: Colors.red,
+                    ));
+                  }
+                });
                 if (isLastQuestion() == false) {
                   setState(() {
                     currentQuestionNumber += 1;
