@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quiz/question.dart';
 
 void main() {
   runApp(QuizApp());
@@ -33,22 +34,30 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
+  List<Question> questions = [
+    Question(question:'Canada Day is celebrated on July 1', answer: true),
+    Question(question:'Queen Elizabeth I is the Royal Queen', answer: false),
+    Question(question:'Aboriginals were the founding people of Canada', answer: true),
+  ];
 
+  int currentQuestionNumber = 0;
+  
   @override
   Widget build(BuildContext context) {
+    // print(questions[0].toString());
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        const Expanded(
+        Expanded(
           flex: 5,
           child: Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'Canada Day is celebrated on July 1',
+                questions[currentQuestionNumber].question,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 25.0,
                   color: Colors.white,
                 ),
@@ -62,7 +71,7 @@ class _QuizPageState extends State<QuizPage> {
             child: ElevatedButton(
               style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.green)),
+                  MaterialStateProperty.all<Color>(Colors.green)),
               child: const Text(
                 'True',
                 style: TextStyle(
@@ -71,9 +80,11 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                setState(() {
-                  scoreKeeper.add(const Icon(Icons.check, color: Colors.green));
-                });
+                if (currentQuestionNumber < questions.length - 1) {
+                  setState(() {
+                    currentQuestionNumber += 1;
+                  });
+                }
               },
             ),
           ),
@@ -84,7 +95,7 @@ class _QuizPageState extends State<QuizPage> {
             child: ElevatedButton(
               style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.red)),
+                  MaterialStateProperty.all<Color>(Colors.red)),
               child: const Text(
                 'False',
                 style: TextStyle(
@@ -93,7 +104,11 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                //The user picked false.
+                if (currentQuestionNumber < questions.length - 1) {
+                  setState(() {
+                    currentQuestionNumber += 1;
+                  });
+                }
               },
             ),
           ),
